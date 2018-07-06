@@ -75,7 +75,7 @@ public class ExecuteRDPCommandServer
 			 for( int x=0; x < cmdArgs.length; x++)
 				 buff.append(cmdArgs[x] + " " );
 			 
-			 System.out.println(cmdArgs);
+			 System.out.println(buff.toString());
 			
 			 if( go)
 			 {
