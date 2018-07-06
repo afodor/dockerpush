@@ -13,6 +13,14 @@ import java.util.List;
 
 import utils.ProcessWrapper;
 
+// something like 
+// docker run -it rdptest:latest /bin/bash 
+// docker run -p 3491:3491 rptest5:latest /root/startServer.bat
+//
+// where .bat file is something like
+// #!/bin/bash
+//  usr/bin/java -cp /root/git/dockerpush/bin wrapAsService.ExecuteRDPCommandServer
+
 public class ExecuteRDPCommandServer
 {
 	public static final int PORT = 3491;
@@ -38,7 +46,8 @@ public class ExecuteRDPCommandServer
 			
 			String aLine = null;
 			
-			 while ((aLine= in.readLine()) != null) {
+			 while ((aLine= in.readLine()) != null && ! aLine.equals("GO")) {
+				 if( ! aLine.equals("GO"))
 				 cmdList.add(aLine);
 			    }
 			 
