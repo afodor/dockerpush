@@ -3,7 +3,6 @@ package wrapAsService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
@@ -11,11 +10,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.ProcessWrapper;
-
 // something like 
 // docker run -it rdptest:latest /bin/bash 
-// docker run -p 3491:3491 rptest5:latest /root/startServer.bat
+// docker run -p 3491:3491 rdptest6:latest /root/startServer.bat
 //
 // where .bat file is something like
 // #!/bin/bash
@@ -44,49 +41,73 @@ public class ExecuteRDPCommandServer
 			BufferedWriter writer = new BufferedWriter(
 					new OutputStreamWriter(aSocket.getOutputStream()));
 			
-			String aLine = null;
+			boolean spin= true;
+			boolean go = false;
 			
-			 while ((aLine= in.readLine()) != null && ! aLine.equals("GO")) {
-				 if( ! aLine.equals("GO"))
-				 cmdList.add(aLine);
-			    }
+			 while (spin)
+			 {
+				 String aLine = in.readLine();
+				 
+				 if( aLine == null)
+				 {
+					 spin = false;
+				 }
+				 else if( aLine.equals("GO"))
+				 {
+					 spin = false; 
+					 go = true;
+					 System.out.println("Starting");
+				 }
+				 else
+				 {
+					 cmdList.add(aLine);
+					 System.out.println("Got " + aLine);
+				 }
+			 }
 			 
 			 String[] cmdArgs = new String[cmdList.size()];
 			 
+			 StringBuffer buff = new StringBuffer();
+			 
 			 for( int x=0; x < cmdArgs.length; x++)
-				 cmdArgs[x] = cmdList.get(x); 
+				 buff.append(cmdArgs[x] + " " );
 			 
-			 Runtime r = Runtime.getRuntime();
-			 Process p = r.exec(cmdArgs);
+			 System.out.println(cmdArgs);
+			
+			 if( go)
+			 {
+				 try
+				 {
+					 for( int x=0; x < cmdArgs.length; x++)
+						 cmdArgs[x] = cmdList.get(x); 
+					 
+					 Runtime r = Runtime.getRuntime();
+					 Process p = r.exec(cmdArgs);
+
+					 BufferedReader br = new BufferedReader (new InputStreamReader(p.getInputStream ()));
+						
+						String s;
+						
+						while ((s = br.readLine ())!= null)
+						{
+				    		System.out.println (s);
+				    		writer.write(s);
+						}
+								
+						p.waitFor();
+						p.destroy();
+				 }
+				 catch(Exception ex)
+				 {
+					 ex.printStackTrace();
+				 }
+			 }
 				
-			 
-			 try
-			 {
-				 BufferedReader br = new BufferedReader (new InputStreamReader(p.getInputStream ()));
-					
-					String s;
-					
-					while ((s = br.readLine ())!= null)
-					{
-			    		System.out.println (s);
-			    		writer.write(s);
-					}
-							
-					p.waitFor();
-					p.destroy();
-			 }
-			 catch(Exception ex)
-			 {
-				 writer.write(ex.toString());
-			 }
-			 finally
-			 {
 				 System.out.println("Closing");
 				 in.close();
 				 writer.flush();
 				 writer.close();
 				 aSocket.close();
-			 }	
 		}
 	}
 }

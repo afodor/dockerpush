@@ -19,12 +19,12 @@ public class ExecuteCommandClient
 		
 		String aLine = null;
 		
-		out.write("-q");
-		out.write("/data/seqs/806rcbc00_AN34_1.fasta");
+		out.write("-q\n");
+		out.write("/data/seqs/806rcbc00_AN34_1.fasta\n");
 		
-		out.write("-o");
-		out.write("/data/seqs/806rcbc00_AN34_1.rdp");
-		out.write("GO");
+		out.write("-o\n");
+		out.write("/data/seqs/806rcbc00_AN34_1.rdp\n");
+		out.write("GO\n");
 		
 		 while ((aLine= in.readLine()) != null) {
 			 System.out.println(aLine);		    
