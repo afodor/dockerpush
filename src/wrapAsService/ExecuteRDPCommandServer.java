@@ -70,6 +70,9 @@ public class ExecuteRDPCommandServer
 			 
 			 String[] cmdArgs = new String[cmdList.size()];
 			 
+			 for( int x=0; x < cmdArgs.length; x++)
+				 cmdArgs[x] = cmdList.get(x); 
+			 
 			 StringBuffer buff = new StringBuffer();
 			 
 			 for( int x=0; x < cmdArgs.length; x++)
@@ -81,9 +84,6 @@ public class ExecuteRDPCommandServer
 			 {
 				 try
 				 {
-					 for( int x=0; x < cmdArgs.length; x++)
-						 cmdArgs[x] = cmdList.get(x); 
-					 
 					 Runtime r = Runtime.getRuntime();
 					 Process p = r.exec(cmdArgs);
 
