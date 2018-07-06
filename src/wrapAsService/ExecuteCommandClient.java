@@ -20,10 +20,10 @@ public class ExecuteCommandClient
 		String aLine = null;
 		
 		out.write("-q\n");
-		out.write("/data/seqs/806rcbc00_AN34_1.fasta\n");
+		out.write("/data/seqs/806rcbc00_AN34_2.fasta\n");
 		
 		out.write("-o\n");
-		out.write("/data/seqs/806rcbc00_AN34_1.rdp\n");
+		out.write("/data/seqs/806rcbc00_AN34_2.rdp\n");
 		out.write("GO\n");
 		out.flush();
 		
