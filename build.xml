@@ -7,8 +7,8 @@
     <property environment="env"/>
     <property name="ECLIPSE_HOME" value="../../eclipse/jee-photon/eclipse/"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="9"/>
-    <property name="source" value="9"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
     <path id="dockerpush.classpath">
         <pathelement location="bin"/>
     </path>
