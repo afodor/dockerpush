@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 // something like 
 // docker run -it rdptest:latest /bin/bash 
@@ -25,10 +26,12 @@ public class ExecuteRDPCommandServer
 	public static void main(String[] args) throws Exception
 	{
 		ServerSocket sSocket = new ServerSocket(PORT);
+		System.out.println("listening at " + PORT);
 		
 		while(true)
 		{
 			Socket aSocket =  sSocket.accept();
+			System.out.println("Got request" + aSocket.getPort());
 			
 			List<String> cmdList = new ArrayList<>();
 			cmdList.add("/usr/bin/java");
@@ -100,14 +103,39 @@ public class ExecuteRDPCommandServer
 				 catch(Exception ex)
 				 {
 					 ex.printStackTrace();
+					 writer.write(ex.getMessage());
 				 }
 			 }
 				
 				 System.out.println("Closing");
 				 in.close();
-				 writer.flush();
-				 writer.close();
-				 aSocket.close();
+				 try
+				 {
+					 writer.flush();
+				 }
+				 catch(Exception ex)
+				 {
+					System.out.println("Warining failed to flush writer"); 
+				 }
+				 
+				 try
+				 {
+					 writer.close();
+				 }
+				 catch(Exception ex)
+				 {
+
+						System.out.println("Warining failed to close writer"); 
+				 }
+				 
+				 try
+				 {
+					 aSocket.close();
+				 }
+				 catch(Exception ex)
+				 {
+					 System.out.println("Socket already closed"); 
+				 }
 		}
 	}
 }

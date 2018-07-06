@@ -25,10 +25,16 @@ public class ExecuteCommandClient
 		out.write("-o\n");
 		out.write("/data/seqs/806rcbc00_AN34_1.rdp\n");
 		out.write("GO\n");
+		out.flush();
 		
-		 while ((aLine= in.readLine()) != null) {
-			 System.out.println(aLine);		    
-			}
+		//while( aSocket.isConnected())
+		{
+			 while ((aLine= in.readLine()) != null) {
+				 System.out.println(aLine);		    
+				}
+			 
+			 Thread.sleep(1000);
+		}
 		
 		out.flush();  out.close(); aSocket.close();
 	}
